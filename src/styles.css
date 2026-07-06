@@ -1,0 +1,209 @@
+/* stylelint-disable-next-line import-notation -- Tailwind v4 requires the bare-string import */
+@import "tailwindcss";
+
+body {
+  @apply m-0;
+
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* ========================================
+   CONFIGURATION
+   ======================================== */
+
+:root {
+  /* Animation timing */
+  --vt-duration: 500ms;
+  --vt-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --vt-animation: var(--vt-duration) var(--vt-easing) both;
+
+  /* Z-index stacking order */
+  --z-nav: 1000;
+  --z-pages: 2;
+  --z-home: 1;
+  --radius: 0.625rem;
+
+  /* Resolved color scheme for the document. The server-rendered <html> class
+     (light | dark | system) overrides this — see the color-scheme rules below.
+     light-dark() reads color-scheme to pick each token, so all three modes
+     resolve in pure CSS with no JS and no flash. This bare value is the
+     fallback for the case where no class is present (e.g. static prerender);
+     keep it in sync with DEFAULT_THEME in src/lib/theme.ts. */
+  color-scheme: light dark;
+
+  /* Resolved scheme as a <color> sentinel (white = light, black = dark) for the
+     style-query technique below. Registered via @property further down. */
+  --scheme: light-dark(white, black);
+  --background: light-dark(oklch(100% 0 0deg), oklch(12.9% 0.042 264.695deg));
+  --foreground: light-dark(oklch(12.9% 0.042 264.695deg), oklch(98.4% 0.003 247.858deg));
+  --card: light-dark(oklch(100% 0 0deg), oklch(20.8% 0.042 265.755deg));
+  --card-foreground: light-dark(oklch(12.9% 0.042 264.695deg), oklch(98.4% 0.003 247.858deg));
+  --popover: light-dark(oklch(100% 0 0deg), oklch(20.8% 0.042 265.755deg));
+  --popover-foreground: light-dark(oklch(12.9% 0.042 264.695deg), oklch(98.4% 0.003 247.858deg));
+  --primary: light-dark(oklch(20.8% 0.042 265.755deg), oklch(92.9% 0.013 255.508deg));
+  --primary-foreground: light-dark(oklch(98.4% 0.003 247.858deg), oklch(20.8% 0.042 265.755deg));
+  --secondary: light-dark(oklch(96.8% 0.007 247.896deg), oklch(27.9% 0.041 260.031deg));
+  --secondary-foreground: light-dark(oklch(20.8% 0.042 265.755deg), oklch(98.4% 0.003 247.858deg));
+  --muted: light-dark(oklch(96.8% 0.007 247.896deg), oklch(27.9% 0.041 260.031deg));
+  --muted-foreground: light-dark(oklch(55.4% 0.046 257.417deg), oklch(70.4% 0.04 256.788deg));
+  --accent: light-dark(oklch(96.8% 0.007 247.896deg), oklch(27.9% 0.041 260.031deg));
+  --accent-foreground: light-dark(oklch(20.8% 0.042 265.755deg), oklch(98.4% 0.003 247.858deg));
+  --destructive: light-dark(oklch(57.7% 0.245 27.325deg), oklch(70.4% 0.191 22.216deg));
+  --border: light-dark(oklch(92.9% 0.013 255.508deg), oklch(100% 0 0deg / 10%));
+  --input: light-dark(oklch(92.9% 0.013 255.508deg), oklch(100% 0 0deg / 15%));
+  --ring: light-dark(oklch(70.4% 0.04 256.788deg), oklch(55.1% 0.027 264.364deg));
+  --chart-1: light-dark(oklch(64.6% 0.222 41.116deg), oklch(48.8% 0.243 264.376deg));
+  --chart-2: light-dark(oklch(60% 0.118 184.704deg), oklch(69.6% 0.17 162.48deg));
+  --chart-3: light-dark(oklch(39.8% 0.07 227.392deg), oklch(76.9% 0.188 70.08deg));
+  --chart-4: light-dark(oklch(82.8% 0.189 84.429deg), oklch(62.7% 0.265 303.9deg));
+  --chart-5: light-dark(oklch(76.9% 0.188 70.08deg), oklch(64.5% 0.246 16.439deg));
+  --sidebar: light-dark(oklch(98.4% 0.003 247.858deg), oklch(20.8% 0.042 265.755deg));
+  --sidebar-foreground: light-dark(oklch(12.9% 0.042 264.695deg), oklch(98.4% 0.003 247.858deg));
+  --sidebar-primary: light-dark(oklch(20.8% 0.042 265.755deg), oklch(48.8% 0.243 264.376deg));
+  --sidebar-primary-foreground: light-dark(
+    oklch(98.4% 0.003 247.858deg),
+    oklch(98.4% 0.003 247.858deg)
+  );
+  --sidebar-accent: light-dark(oklch(96.8% 0.007 247.896deg), oklch(27.9% 0.041 260.031deg));
+  --sidebar-accent-foreground: light-dark(
+    oklch(20.8% 0.042 265.755deg),
+    oklch(98.4% 0.003 247.858deg)
+  );
+  --sidebar-border: light-dark(oklch(92.9% 0.013 255.508deg), oklch(100% 0 0deg / 10%));
+  --sidebar-ring: light-dark(oklch(70.4% 0.04 256.788deg), oklch(55.1% 0.027 264.364deg));
+}
+
+/* Dark utilities (`dark:`) apply when the theme is forced dark OR when the
+   theme is `system` and the OS prefers dark. This keeps Tailwind's dark variant
+   correct across all three modes without any JS resolving system -> class.
+   Color tokens flip automatically via light-dark(), so `dark:` is only needed
+   for the occasional non-color utility. */
+@custom-variant dark {
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root -- `&` is scoped by Tailwind's @custom-variant, which stylelint can't parse */
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root -- `&` is scoped by Tailwind's @custom-variant, which stylelint can't parse */
+    &:where(.system, .system *) {
+      @slot;
+    }
+  }
+}
+
+/* The server stamps one of these classes on <html> from the `theme` cookie, so
+   the correct color-scheme is present in the very first byte of HTML. */
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.system {
+  color-scheme: light dark;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ========================================
+   SCHEME-AWARE NON-COLOR STYLING
+   ----------------------------------------
+   Colors flip automatically via light-dark() above. For *non-color* swaps
+   (e.g. an elevation shadow in light vs. a border in dark) we expose the
+   resolved scheme as a registered <color> custom property and read it with a
+   style container query — the approach from
+   https://olliewilliams.xyz/blog/dark-mode/. light-dark() only resolves
+   colors, so we use white/black as sentinels for light/dark.
+
+   Because --scheme is driven by color-scheme, the style query is correct for
+   forced-dark AND system-resolved-dark in one rule. The class-based rules
+   below are the fallback for browsers without style-query support; they key
+   off the server-rendered class so forced light is never affected. */
+@property --scheme {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+
+.surface-elevated {
+  box-shadow: 0 2px 3px rgb(0 0 0 / 20%);
+}
+
+@container style(--scheme: black) {
+  .surface-elevated {
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+}
+
+.dark .surface-elevated {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .system .surface-elevated {
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
