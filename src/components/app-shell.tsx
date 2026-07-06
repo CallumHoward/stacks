@@ -10,7 +10,10 @@ import type { Theme } from "#/lib/theme";
 export function AppShell({ theme, children }: { theme: Theme; children: React.ReactNode }) {
   return (
     <ThemeProvider initialTheme={theme}>
-      <header className="flex w-full justify-end p-4">
+      <header className="flex h-14 w-full items-center justify-between border-b px-4">
+        <span className="font-mono text-sm font-semibold tracking-tight">
+          stacks<span className="text-strata">/</span>
+        </span>
         <ThemeToggle />
       </header>
       {children}

@@ -27,7 +27,7 @@ export const Route = createRootRoute({
         content: "light dark",
       },
       {
-        title: "TanStack Start Starter",
+        title: "stacks/ — stacked PR visualiser",
       },
     ],
     links: [

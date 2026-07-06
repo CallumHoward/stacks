@@ -79,6 +79,11 @@ code {
   );
   --sidebar-border: light-dark(oklch(92.9% 0.013 255.508deg), oklch(100% 0 0deg / 10%));
   --sidebar-ring: light-dark(oklch(70.4% 0.04 256.788deg), oklch(55.1% 0.027 264.364deg));
+
+  /* Stacks: warm copper strata accent against the cool slate chrome, plus CI verdict colors. */
+  --strata: light-dark(oklch(55% 0.11 45deg), oklch(72% 0.11 50deg));
+  --ci-pass: light-dark(oklch(56% 0.15 152deg), oklch(72% 0.17 155deg));
+  --ci-pending: light-dark(oklch(70% 0.14 80deg), oklch(80% 0.15 85deg));
 }
 
 /* Dark utilities (`dark:`) apply when the theme is forced dark OR when the
@@ -153,6 +158,9 @@ html.system {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-strata: var(--strata);
+  --color-ci-pass: var(--ci-pass);
+  --color-ci-pending: var(--ci-pending);
 }
 
 /* ========================================
